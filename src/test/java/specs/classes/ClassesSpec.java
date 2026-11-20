@@ -19,4 +19,20 @@ public class ClassesSpec {
             .expectStatusCode(404)
             .expectBody("message", notNullValue())
             .build();
+
+    public static ResponseSpecification getClassSuccessResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(200)
+            .expectBody("url", notNullValue())
+            .build();
+
+    public static ResponseSpecification headClassSuccessResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(200)
+            .build();
+
+    public static ResponseSpecification headClassNotFoundResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(404)
+            .build();
 }
