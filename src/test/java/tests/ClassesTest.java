@@ -7,11 +7,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
+import tests.testdata.TestDataClasses;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClassesTest extends TestBase {
+    TestDataClasses testData = new TestDataClasses();
 
     @Test
     @DisplayName("Получение метаданных фильтров классов")
@@ -20,7 +23,7 @@ public class ClassesTest extends TestBase {
 
         step("Проверка списка фильтров", () -> {
             assertThat(response.getFilters()).isNotEmpty();
-            assertThat(response.getFilters().get(0).getKey()).isEqualTo("hitDice");
+            assertThat(response.getFilters().get(0).getKey()).isEqualTo(testData.firstFilter);
             assertThat(response.getFilters().get(0).getValues()).isNotEmpty();
         });
     }
@@ -28,26 +31,25 @@ public class ClassesTest extends TestBase {
     @Test
     @DisplayName("Запрос несуществующего класса возвращает 404")
     public void getNonExistentClassTest() {
-        String nonExistentUrl = "bard-phb";
-        ErrorResponseModel response = api.classes.getNonExistentClass(nonExistentUrl);
+        ErrorResponseModel response = api.classes.getNonExistentClass(testData.nonExistentClassUrl());
 
         step("Проверка текста ошибки 404", () -> {
             assertThat(response.getStatus()).isEqualTo(404);
             assertThat(response.getError()).isEqualTo("Not Found");
             assertThat(response.getMessage())
-                    .isEqualTo("Класс с url " + nonExistentUrl + " не существует");
+                    .isEqualTo(testData.nonExistentClassMessage);
         });
     }
 
     @ParameterizedTest(name = "Получение карточки класса {0} ({1})")
-    @CsvSource({
-            "warlock, Колдун, Warlock, PACT",
-            "bard, Бард, Bard, FULL",
-            "monk, Монах, Monk, NONE",
-            "rogue, Плут, Rogue, NONE"
-    })
+    @MethodSource("tests.testdata.TestDataClasses#existingClassesProvider")
     @DisplayName("Успешное получение карточки существующего класса")
-    public void getExistingClassTest(String url, String expectedRusName, String expectedEngName, String expectedCasterType) {
+    public void getExistingClassTest(
+            String url,
+            String expectedRusName,
+            String expectedEngName,
+            String expectedCasterType
+    ) {
         ClassResponseModel response = api.classes.getClassByUrl(url);
 
         step("Проверка данных карточки класса", () -> {
@@ -62,12 +64,12 @@ public class ClassesTest extends TestBase {
     @Test
     @DisplayName("HEAD запрос подтверждает наличие существующего класса (200)")
     public void headExistingClassTest() {
-        api.classes.headClassByUrl("warlock", true);
+        api.classes.headClassByUrl(testData.existentClassUrl(), true);
     }
 
     @Test
     @DisplayName("HEAD запрос для несуществующего класса возвращает 404")
     public void headNonExistentClassTest() {
-        api.classes.headClassByUrl("unknown-class", false);
+        api.classes.headClassByUrl(testData.nonExistentClassUrl(), false);
     }
 }
