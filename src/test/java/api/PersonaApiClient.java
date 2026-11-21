@@ -75,4 +75,15 @@ public class PersonaApiClient {
                 .then()
                 .spec(deletePersonaSuccessSpec);
     }
+
+    @Step("[API] Удаление несуществующей персоны DELETE /persona/{id} (404)")
+    public ErrorResponseModel deleteNonExistentPersona(String id) {
+        return given(baseRequestSpec)
+                .pathParam("id", id)
+                .when()
+                .delete("/persona/{id}")
+                .then()
+                .spec(personaNotFoundSpec)
+                .extract().as(ErrorResponseModel.class);
+    }
 }

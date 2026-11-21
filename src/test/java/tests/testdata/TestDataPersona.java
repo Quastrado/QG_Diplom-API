@@ -12,4 +12,5 @@ public class TestDataPersona {
     public String personaImage = "https://example.com/" + faker.internet().slug() + ".png";
     public String updatedPersonaName = faker.name().firstName();
     public String personaId = UUID.randomUUID().toString();
+    public String notFoundErrorText = "Not Found";
 }

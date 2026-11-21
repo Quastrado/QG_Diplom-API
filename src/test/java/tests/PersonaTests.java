@@ -3,7 +3,6 @@ package tests;
 import models.common.ErrorResponseModel;
 import models.persona.PersonaRequestModel;
 import models.persona.PersonaResponseModel;
-import net.datafaker.Faker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.testdata.TestDataPersona;
@@ -70,6 +69,18 @@ public class PersonaTests extends TestBase {
             assertThat(error.getStatus()).isEqualTo(409);
             assertThat(error.getError()).isEqualTo("Conflict");
             assertThat(error.getMessage()).contains("Данные уже изменили в другом месте");
+        });
+    }
+
+    @Test
+    @DisplayName("Удаление несуществующей персоны возвращает 404 Not Found")
+    public void deleteNonExistentPersonaTest() {
+        ErrorResponseModel error = api.persona.deleteNonExistentPersona(testData.personaId);
+
+        step("Проверка ответа 404 Not Found", () -> {
+            assertThat(error.getStatus()).isEqualTo(404);
+            assertThat(error.getError()).isEqualTo(testData.notFoundErrorText);
+            assertThat(error.getMessage()).isNotBlank();
         });
     }
 }
