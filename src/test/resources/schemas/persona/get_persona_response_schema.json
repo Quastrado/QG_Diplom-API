@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org",
+  "type": "object",
+  "required": ["id", "name", "image", "disabled"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "image": { "type": ["string", "null"] },
+    "disabled": { "type": "boolean" }
+  }
+}
