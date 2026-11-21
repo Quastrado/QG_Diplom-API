@@ -37,6 +37,11 @@ public class PersonaSpec {
             .expectStatusCode(204)
             .build();
 
+    public static ResponseSpecification deletePersonaNotFoundSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(404)
+            .build();
+
     public static ResponseSpecification personaConflictSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(409)
