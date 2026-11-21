@@ -12,7 +12,7 @@ import tests.testdata.TestDataClasses;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ClassesTest extends TestBase {
+public class ClassesTests extends TestBase {
     TestDataClasses testData = new TestDataClasses();
 
     @Test
