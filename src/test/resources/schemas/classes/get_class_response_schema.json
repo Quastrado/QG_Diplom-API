@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org",
+  "type": "object",
+  "required": [
+    "url",
+    "description",
+    "updatedAt",
+    "hitDice",
+    "casterType",
+    "hasSubclasses",
+    "name"
+  ],
+  "properties": {
+    "url": { "type": "string" },
+    "description": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "casterType": { "type": "string" },
+    "hasSubclasses": { "type": "boolean" },
+    "hitDice": {
+      "type": "object",
+      "required": ["label", "value", "maxValue", "avg"],
+      "properties": {
+        "label": { "type": "string" },
+        "value": { "type": "string" },
+        "maxValue": { "type": "integer" },
+        "avg": { "type": "integer" }
+      }
+    },
+    "name": {
+      "type": "object",
+      "required": ["rus", "eng"],
+      "properties": {
+        "rus": { "type": "string" },
+        "eng": { "type": "string" }
+      }
+    }
+  }
+}

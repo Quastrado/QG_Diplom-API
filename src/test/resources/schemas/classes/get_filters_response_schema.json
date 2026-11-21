@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org",
+  "type": "object",
+  "required": ["filters"],
+  "properties": {
+    "filters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["key", "name", "supports", "values"],
+        "properties": {
+          "key": { "type": "string" },
+          "name": { "type": "string" },
+          "supports": {
+            "type": "object",
+            "required": ["mode", "union"],
+            "properties": {
+              "mode": { "type": "boolean" },
+              "union": { "type": "boolean" }
+            }
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "value", "name", "selected"],
+              "properties": {
+                "id": { "type": "string" },
+                "value": { "type": "string" },
+                "name": { "type": "string" },
+                "selected": { "type": ["boolean", "null"] }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

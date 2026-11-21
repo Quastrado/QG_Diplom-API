@@ -14,7 +14,9 @@ public class TestDataClasses {
     public static String nonExistentClassUrl() {
         return new Faker().options().option("druid", "cleric", "barbarian", "paladin");
     }
-    public String nonExistentClassMessage = "Класс с url " + nonExistentClassUrl() + " не существует";
+    public String nonExistentClassMessage(String nonExistentClassUrl){
+        return "Класс с url " + nonExistentClassUrl + " не существует";
+    }
     public static Stream<Arguments> existingClassesProvider() {
         return Stream.of(
                 Arguments.of("warlock", "Колдун", "Warlock", "PACT"),

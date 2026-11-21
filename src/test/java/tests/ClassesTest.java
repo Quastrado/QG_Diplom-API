@@ -6,7 +6,6 @@ import models.classes.FiltersResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import tests.testdata.TestDataClasses;
 
@@ -31,13 +30,14 @@ public class ClassesTest extends TestBase {
     @Test
     @DisplayName("Запрос несуществующего класса возвращает 404")
     public void getNonExistentClassTest() {
-        ErrorResponseModel response = api.classes.getNonExistentClass(testData.nonExistentClassUrl());
+        String nonExistentClassUrl = testData.nonExistentClassUrl();
+        ErrorResponseModel response = api.classes.getNonExistentClass(nonExistentClassUrl);
 
         step("Проверка текста ошибки 404", () -> {
             assertThat(response.getStatus()).isEqualTo(404);
             assertThat(response.getError()).isEqualTo("Not Found");
             assertThat(response.getMessage())
-                    .isEqualTo(testData.nonExistentClassMessage);
+                    .isEqualTo(testData.nonExistentClassMessage(nonExistentClassUrl));
         });
     }
 
