@@ -54,10 +54,4 @@ tasks.withType(Test) {
 
 test {
     useJUnitPlatform()
-    doLast {
-        copy {
-            from 'src/test/resources/categories.json'
-            into 'build/allure-results'
-        }
-    }
 }
