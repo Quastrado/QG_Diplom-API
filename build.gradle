@@ -40,9 +40,21 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 }
 
+tasks.matching { it.name == 'copyCategories' }.configureEach {
+    enabled = false
+}
+
 tasks.withType(Test) {
     useJUnitPlatform()
     systemProperties(System.getProperties())
+    systemProperty 'file.encoding', 'UTF-8'
+
+    doLast {
+        copy {
+            from 'src/test/resources/categories.json'
+            into 'build/allure-results'
+        }
+    }
 
     testLogging {
         lifecycle {
@@ -50,8 +62,4 @@ tasks.withType(Test) {
             exceptionFormat "short"
         }
     }
-}
-
-test {
-    useJUnitPlatform()
 }

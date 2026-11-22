@@ -1,0 +1,65 @@
+services:
+  postgres:
+    image: mirror.gcr.io/library/postgres:16-alpine
+    container_name: ttg-postgres
+    environment:
+      POSTGRES_DB: dnd5
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: dockerhub.timeweb.cloud/pgsty/minio:latest
+    container_name: ttg-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  core-api:
+    build: .
+    container_name: ttg-core-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      APP_URL: http://localhost:8080
+      JWT_SECRET: local-dev-secret-key-at-least-32-characters-long
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/dnd5
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_CLOUD_AWS_S3_ENDPOINT: http://minio:9000
+      SPRING_CLOUD_AWS_S3_REGION: us-east-1
+      SPRING_CLOUD_AWS_S3_BUCKET: ttg-club
+      SPRING_CLOUD_AWS_CREDENTIALS_ACCESS_KEY: minioadmin
+      SPRING_CLOUD_AWS_CREDENTIALS_SECRET_KEY: minioadmin
+
+  swagger-ui:
+    image: dockerhub.timeweb.cloud/swaggerapi/swagger-ui:latest
+    container_name: ttg-swagger
+    ports:
+      - "8081:8080"
+    environment:
+      URL: http://localhost:8080/v3/api-docs
+
+volumes:
+  pg_data:
+  minio_data:
