@@ -2,6 +2,7 @@ package api;
 
 import io.qameta.allure.Step;
 import models.classes.ClassResponseModel;
+import models.classes.ClassUpdateRequestModel;
 import models.common.ErrorResponseModel;
 import models.classes.FiltersResponseModel;
 
@@ -51,5 +52,17 @@ public class ClassesApiClient {
                 .head("/classes/{url}")
                 .then()
                 .spec(shouldExist ? headClassSuccessResponseSpec : headClassNotFoundResponseSpec);
+    }
+
+    @Step("[API] Попытка обновления класса без прав доступа PUT /classes/{url} (403)")
+    public ErrorResponseModel updateClassWithoutAuth(String url, ClassUpdateRequestModel body) {
+        return given(baseRequestSpec)
+                .pathParam("url", url)
+                .body(body)
+                .when()
+                .put("/classes/{url}")
+                .then()
+                .spec(classForbiddenResponseSpec)
+                .extract().as(ErrorResponseModel.class);
     }
 }

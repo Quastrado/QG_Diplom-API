@@ -1,6 +1,7 @@
 package tests;
 
 import models.classes.ClassResponseModel;
+import models.classes.ClassUpdateRequestModel;
 import models.common.ErrorResponseModel;
 import models.classes.FiltersResponseModel;
 import org.junit.jupiter.api.DisplayName;
@@ -71,5 +72,30 @@ public class ClassesTests extends TestBase {
     @DisplayName("HEAD запрос для несуществующего класса возвращает 404")
     public void headNonExistentClassTest() {
         api.classes.headClassByUrl(testData.nonExistentClassUrl(), false);
+    }
+
+    @Test
+    @DisplayName("Попытка обновления класса без авторизации возвращает 403 Forbidden")
+    public void updateClassWithoutAuthTest() {
+        String classUrl = testData.existentClassUrl();
+
+        ClassUpdateRequestModel requestBody = ClassUpdateRequestModel.builder()
+                .url(classUrl)
+                .name(ClassUpdateRequestModel.NameModel.builder()
+                        .rus(testData.rusClassName)
+                        .eng(testData.engClassName)
+                        .build())
+                .description("Попытка изменения без прав")
+                .hitDice(8)
+                .casterType("FULL")
+                .build();
+
+        ErrorResponseModel error = api.classes.updateClassWithoutAuth(classUrl, requestBody);
+
+        step("Проверка ответа 403 Forbidden", () -> {
+            assertThat(error.getStatus()).isEqualTo(403);
+            assertThat(error.getError()).isEqualTo("Forbidden");
+            assertThat(error.getMessage()).isEqualTo("Доступ запрещен");
+        });
     }
 }

@@ -45,4 +45,11 @@ public class ClassesSpec {
             .log(ALL)
             .expectStatusCode(404)
             .build();
+
+    public static ResponseSpecification classForbiddenResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(403)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/common/error_response_schema.json"))
+            .expectBody("message", notNullValue())
+            .build();
 }
