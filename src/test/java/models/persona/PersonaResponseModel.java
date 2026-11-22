@@ -1,6 +1,6 @@
 package models.persona;
 
-import io.qameta.allure.internal.shadowed.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
@@ -10,4 +10,6 @@ public class PersonaResponseModel {
     private String name;
     private String image;
     private Boolean disabled;
+    private String username;
+    private String createdAt;
 }

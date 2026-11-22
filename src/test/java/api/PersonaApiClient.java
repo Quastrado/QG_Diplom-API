@@ -5,11 +5,23 @@ import models.common.ErrorResponseModel;
 import models.persona.PersonaRequestModel;
 import models.persona.PersonaResponseModel;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.baseRequestSpec;
 import static specs.persona.PersonaSpec.*;
 
 public class PersonaApiClient {
+
+    @Step("[API] Получение списка всех персон GET /persona")
+    public List<PersonaResponseModel> getAllPersonas() {
+        return given(baseRequestSpec)
+                .when()
+                .get("/persona")
+                .then()
+                .spec(getPersonaListSuccessSpec)
+                .extract().jsonPath().getList("", PersonaResponseModel.class);
+    }
 
     @Step("[API] Создание персоны POST /persona")
     public String createPersona(PersonaRequestModel body) {
@@ -85,4 +97,39 @@ public class PersonaApiClient {
                 .then()
                 .spec(deletePersonaNotFoundSpec);
     }
+
+    @Step("[API] Запрос персоны с невалидным UUID GET /persona/{invalidId} (400)")
+    public ErrorResponseModel getPersonaWithInvalidId(String invalidId) {
+        return given(baseRequestSpec)
+                .pathParam("id", invalidId)
+                .when()
+                .get("/persona/{id}")
+                .then()
+                .spec(invalidUuidSpec)
+                .extract().as(ErrorResponseModel.class);
+    }
+
+    @Step("[API] Обновление персоны с невалидным UUID PATCH /persona/{invalidId} (400)")
+    public ErrorResponseModel patchPersonaWithInvalidId(String invalidId, PersonaRequestModel body) {
+        return given(baseRequestSpec)
+                .pathParam("id", invalidId)
+                .body(body)
+                .when()
+                .patch("/persona/{id}")
+                .then()
+                .spec(invalidUuidSpec)
+                .extract().as(ErrorResponseModel.class);
+    }
+
+    @Step("[API] Удаление персоны с невалидным UUID DELETE /persona/{invalidId} (400)")
+    public ErrorResponseModel deletePersonaWithInvalidId(String invalidId) {
+        return given(baseRequestSpec)
+                .pathParam("id", invalidId)
+                .when()
+                .delete("/persona/{id}")
+                .then()
+                .spec(invalidUuidSpec)
+                .extract().as(ErrorResponseModel.class);
+    }
+
 }

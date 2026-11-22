@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Дефекты бэкенда (500 Internal Server Error)",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*Expected status code <400> but was <500>.*"
+  },
+  {
+    "name": "Дефекты продукта (Assertion errors)",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Проблемы окружения / сломанные тесты",
+    "matchedStatuses": ["broken"]
+  }
+]

@@ -13,6 +13,14 @@ public class PersonaSpec {
     private static final String UUID_REGEX =
             "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$";
 
+    public static ResponseSpecification getPersonaListSuccessSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(200)
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/persona/get_persona_list_response_schema.json"
+            ))
+            .build();
+
     public static ResponseSpecification createPersonaSuccessSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(200)
@@ -22,7 +30,9 @@ public class PersonaSpec {
     public static ResponseSpecification getPersonaSuccessSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(200)
-            .expectBody(matchesJsonSchemaInClasspath("schemas/persona/get_persona_response_schema.json"))
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/persona/get_persona_response_schema.json"
+            ))
             .expectBody("id", notNullValue())
             .build();
 
@@ -45,12 +55,24 @@ public class PersonaSpec {
     public static ResponseSpecification personaConflictSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(409)
-            .expectBody(matchesJsonSchemaInClasspath("schemas/common/error_response_schema.json"))
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/common/error_response_schema.json"
+            ))
             .build();
 
     public static ResponseSpecification personaNotFoundSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(404)
-            .expectBody(matchesJsonSchemaInClasspath("schemas/common/error_response_schema.json"))
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/common/error_response_schema.json"
+            ))
+            .build();
+
+    public static ResponseSpecification invalidUuidSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/common/error_response_schema.json"
+            ))
             .build();
 }

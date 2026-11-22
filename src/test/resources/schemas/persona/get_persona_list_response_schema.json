@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "name", "image", "disabled", "username", "createdAt"],
+    "properties": {
+      "id": { "type": "string" },
+      "name": { "type": "string" },
+      "image": { "type": ["string", "null"] },
+      "disabled": { "type": "boolean" },
+      "username": { "type": ["string", "null"] },
+      "createdAt": { "type": "string" }
+    }
+  }
+}
