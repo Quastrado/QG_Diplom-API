@@ -17,7 +17,7 @@ services:
       retries: 5
 
   minio:
-    image: dockerhub.timeweb.cloud/pgsty/minio:latest
+    image: ghcr.io/coollabsio/minio:latest
     container_name: ttg-minio
     command: server /data --console-address ":9001"
     environment:
@@ -53,7 +53,7 @@ services:
       SPRING_CLOUD_AWS_CREDENTIALS_SECRET_KEY: minioadmin
 
   swagger-ui:
-    image: dockerhub.timeweb.cloud/swaggerapi/swagger-ui:latest
+    image: mirror.gcr.io/swaggerapi/swagger-ui:latest
     container_name: ttg-swagger
     ports:
       - "8081:8080"
