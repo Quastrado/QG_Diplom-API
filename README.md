@@ -41,7 +41,7 @@
 
 1. Клонируйте репозиторий с исходным кодом API:
 ```bash
-git clone <ссылка-на-репозиторий-api>
+git clone https://github.com/TTG-Club/core-api
 ```
 
 2. Поместите файл `docker-compose.yml` в корневую папку скачанного репозитория.
