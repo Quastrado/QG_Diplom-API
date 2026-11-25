@@ -80,6 +80,8 @@ docker-compose down
 Сборка Quastrado_Diplom-TTGClub_API настроена в Jenkins с поддержкой параметров среды (например, передача `BASE_URL`) 
 
 ![Jenkins](images/jenkins_job.png)
+![Jenkins](images/jenkins_overview.png)
+![Allure Graphs](images/allure_graphs.png)
 
 ## Отчёты Allure и категории дефектов
 После прогона формируется отчёт с логами запросов и ответов. В конфигурации настроена группировка падений по типам:
@@ -87,15 +89,18 @@ docker-compose down
 - Продуктовые баги (несовпадение ожидаемых данных);
 - Сбои окружения (статус broken).
 
-![Allure Overview](images/allure_overview.png)
-![Allure Graphs](images/allure_graphs.png)
+![Allure Overview](images/allure_suites.png)
+
 
 ## Работа с Allure TestOps
 - Автоматическая загрузка результатов прогонов из Jenkins;
-- Генерация актуальной тестовой документации на основе кода;
-- Запуск сборок напрямую из интерфейса TMS.
-
 ![TestOps Dashboard](images/allureTestops_dashboard.png)
+![TestOps Dashboard](images/allureTestops_launches.png)
+- Генерация актуальной тестовой документации на основе кода;
+![TestOps Dashboard](images/allureTestops_testcases.png)
+- Запуск сборок напрямую из интерфейса TMS.
+![TestOps Dashboard](images/allureTestops_job.png)
+
 
 ## Оповещения в Telegram
 По итогам сборки утилита уведомлений отправляет в чат диаграмму со статистикой прохождения и ссылку на отчёт.
